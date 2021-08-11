@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ACCEPTED_COMMAND="start stop restart emergency maintenance request_location"
 LOCK_FILE="/tmp/kemenn/kemenn_started" #Pour être sûr de démarrer qu'une fois le serveur.
 COMMAND_FILE="/tmp/kemenn/command"
