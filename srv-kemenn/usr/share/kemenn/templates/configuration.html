@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h2>Configuration cliente</h2>
+	<div class="logout_b">
+		<form method="get" action="{{url_for('configuration_admin')}}">
+			<p><button type="submit" title="Allez à la configuration admin"> Administration </button></p>
+		</form>
+	</div>
+
+	<form method="post" action="{{url_for('appli_config')}}">
+        <button type="submit" title="Appliquer cette configuration"> Appliquer </button>
+			<p>
+				<label><b>Message d'alerte : </b></label>
+				<input type="text" id="alert_msg" name="alert_msg" value="{{alert_message}}" size=74 />
+			</p>
+			<p>
+				<label><b>Message de confirmation : </b></label>
+				<input type="text" id="confirm_msg" name="confirm_msg" value="{{confirm_message}}" size=67 />
+			</p>
+			<p>
+				<label><b>Message d'erreur : </b></label>
+				<input type="text" id="error_msg" name="error_msg" value="{{error_message}}" size=74 />
+			</p>
+
+			<hr>
+
+			<label><b>Groupe d'utilisateur : </b></label>
+				<p>
+					<label>Groupe général : </label>
+					<input type="text" id="general_usr" name="general_usr" value="{{general_users}}" size=77 />
+				</p>
+                {% for k, v in groups.items() %}
+                    <p>
+                        <input type="text" id="{{k}}_groupname" name="{{k}}_groupname" value="{{k}}" />
+                        <input type="text" id="{{k}}_usersvalue" name="{{k}}_usersvalue" value="{{v}}" size=67 />
+                    </p>
+                {% endfor %}
+				<p>
+					<input type="text" id="new_group" name="new_group" />
+					<input type="text" id="new_users" name="new_users" size=67 />
+				</p>
+
+			<hr>
+
+			<label><b>Contacts : </b></label>
+                {% for k, v in contacts.items() %}
+                    <p>
+                        <input type="text" id="{{k}}_id" name="{{k}}_id" value="{{k}}" />
+                        <input type="text" id="{{k}}_names" name="{{k}}_names" value="{{v}}" size=67 />
+                    </p>
+                {% endfor %}
+				<p>
+					<input type="text" id="new_contact" name="new_contact" />
+					<input type="text" id="new_name" name="new_name" size=67 />
+				</p>
+
+			<hr>
+
+			<label><b>Localisation : </b></label>
+				<p>
+					<label>Localisation par défaut : </label>
+					<input type="text" id="default_location" name="default_location" value="{{default_location}}" size=71 />
+				</p>
+				<p>
+					<label>Localisation inconnue : </label>
+					<input type="text" id="unknow_location" name="unknow_location" value="{{unknow_location}}" size=72 />
+				</p>
+                {% for k, v in locations.items() %}
+                    <p>
+                        <input type="text" id="{{k}}_mac" name="{{k}}_mac" value="{{k}}" />
+                        <input type="text" id="{{k}}_location" name="{{k}}_location" value="{{v}}" size=67 />
+                    </p>
+                {% endfor %}
+				<p>
+					<input type="text" id="new_macaddr" name="new_macaddr" />
+					<input type="text" id="new_location" name="new_location" size=67 />
+				</p>
+	</form>
+{% endblock %}

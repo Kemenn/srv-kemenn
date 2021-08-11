@@ -1,0 +1,10 @@
+#WebApp params
+HOST=localhost
+PORT=4700
+
+#If you use a RDS infrastructure
+SEARCH_MAC_RDP_CLIENTS=True
+MAC_SERVICE_TIME=74
+
+#If you use a LDAP server
+USE_LDAP_SERVICE=True

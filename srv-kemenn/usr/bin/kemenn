@@ -1,0 +1,83 @@
+ACCEPTED_COMMAND="start stop restart emergency maintenance request_location"
+LOCK_FILE="/tmp/kemenn/kemenn_started" #Pour être sûr de démarrer qu'une fois le serveur.
+COMMAND_FILE="/tmp/kemenn/command"
+KEMENN_LOG_OUT="/tmp/kemenn/out.log"
+KEMENN_LOG_ERR="/tmp/kemenn/err.log"
+
+
+start_server() {
+    python3 "/usr/share/kemenn/kemenn_appserver.py" >"$KEMENN_LOG_OUT" 2>"$KEMENN_LOG_ERR" &
+    echo "$!" > "$LOCK_FILE"
+    sleep 5
+    if [ "$(cat $KEMENN_LOG_ERR)" != "" ]; then
+        rm "$LOCK_FILE"
+        return 1
+    fi
+    return 0
+}
+
+
+if [ -e "$LOCK_FILE" ] && [ "$1" == "start" ]; then
+    echo "Erreur : le serveur est déjà en cours d'exécution"
+    exit 2
+fi
+mkdir -p "$(dirname "$COMMAND_FILE")"
+if [ -e "$KEMENN_LOG_OUT" ]; then
+    mv "$KEMENN_LOG_OUT" "$KEMENN_LOG_OUT.old"
+fi
+if [ -e "$KEMENN_LOG_ERR" ]; then
+    mv "$KEMENN_LOG_ERR" "$KEMENN_LOG_ERR.old"
+fi
+
+echo "$ACCEPTED_COMMAND" | grep "$1" >/dev/null 2>/dev/null
+if [ "$?" -ne 0 ]; then
+   echo "Commande non accepté : $1"
+   exit 1
+fi
+
+
+if [ "$1" == "start" ]; then
+    start_server
+    if [ "$?" -eq 0 ]; then
+        echo "Les fichiers de logs sont dans $(dirname "$COMMAND_FILE")"
+        echo "success" > "$COMMAND_FILE"
+    else
+        echo "Erreur lors du démarrage du serveur"
+        cat "$KEMENN_LOG_ERR"
+    fi
+
+elif [ "$1" == "stop" ]; then
+    echo "stop" > "$COMMAND_FILE"
+    rm "$LOCK_FILE"
+
+elif [ "$1" == "restart" ]; then
+    echo "restart" > "$COMMAND_FILE"
+    rm "$LOCK_FILE"
+
+elif [ "$1" == "maintenance" ]; then
+    echo "maintenance" > "$COMMAND_FILE"
+    rm "$LOCK_FILE"
+
+elif [ "$1" == "emergency" ]; then
+    kill -9 "$(cat $LOCK_FILE)"
+    echo "Server is killed" > "$COMMAND_FILE"
+    rm "$LOCK_FILE"
+
+elif [ "$1" == "request_location" ]; then
+    echo "request_location $2" > "$COMMAND_FILE"
+
+else
+    echo "Commande non accepté : $1"
+    exit 1
+fi
+
+while [ "$(cat $COMMAND_FILE)" == "$1" ]; do
+    sleep 2
+done
+echo "$(cat $COMMAND_FILE)"
+echo "" > "$COMMAND_FILE"
+if [ ! -e "$LOCK_FILE" ]; then
+    echo "Server is down !"
+fi
+
+exit 0

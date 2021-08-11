@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h2>Configuration administrateur</h2>
+	<div class="logout_b">
+		<form method="get" action="{{url_for('configuration')}}">
+			<p><button type="submit" title="Allez à la configuration admin"> Clients </button></p>
+		</form>
+	</div>
+
+	<form method="post" action="{{url_for('appli_admin_config')}}">
+        <button type="submit" title="Appliquer cette configuration"> Appliquer </button>
+			<p>
+				<label><b>Mot de passe d'accès à l'interface : </b></label>
+				<input type="password" id="new_password" name="new_password" size=47 />
+			</p>
+
+			<hr>
+
+			<label><b>Configuration du serveur LDAP : </b></label>
+				<p>
+					<label>Adresse du serveur : </label>
+					<input type="text" id="new_ldap_address" name="new_ldap_address" value="{{ldap_address}}" size=77 />
+				</p>
+				<p>
+					<label>Nom d'utilisateur : </label>
+					<input type="text" id="new_ldap_username" name="new_ldap_username" value="{{ldap_username}}" size=77 />
+				</p>
+				<p>
+					<label>Mot de passe de l'utilisateur : </label>
+					<input type="password" id="new_ldap_password" name="new_ldap_password" value="{{ldap_password}}" size=77 />
+				</p>
+				<p>
+					<label>Base LDAP : </label>
+					<input type="text" id="new_ldap_base" name="new_ldap_base" value="{{ldap_base}}" size=77 />
+				</p>
+
+			<hr>
+
+			<label><b>Configuration des serveurs RDS : </b></label>
+				<p>
+					<label>Liste des adresses des serveurs : </label>
+					<input type="text" id="new_list_rds" name="new_list_rds" value="{{list_rds}}" size=77 />
+				</p>
+				<p>
+					<label>Nom d'utilisateur : </label>
+					<input type="text" id="new_rds_username" name="new_rds_username" value="{{rds_username}}" size=77 />
+				</p>
+				<p>
+					<label>Mot de passe de l'utilisateur : </label>
+					<input type="password" id="new_rds_password" name="new_rds_password" value="{{rds_password}}" size=77 />
+				</p>
+    </form>
+{% endblock %}

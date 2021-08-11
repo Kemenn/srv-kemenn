@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Connexion</h1>
+    <form method="post" action="{{ url_for('authentication') }}">
+        <p><label>Mot de passe :</label> <input type="password" name="password" required></p>
+        <strong style='color:red;'>{{ additional_message }}</strong>
+        <p><button type="submit" title="Se connecter"> Valider </button></p>
+    </form>
+{% endblock %}

@@ -1,0 +1,3 @@
+#On retire les dépendances pythons
+python3 -m pip uninstall -y getmac
+python3 -m pip uninstall -y pypsrp

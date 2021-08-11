@@ -1,0 +1,26 @@
+#Installation des dépendances python
+python3 -m pip install getmac
+python3 -m pip install pypsrp
+
+#Configuration du service web
+HOST=$(whiptail --title "Hostname" --inputbox "Quel va être le nom d'hôte ?" 10 60 "$(hostname -I | cut -d' ' -f1)" 3>&1 1>&2 2>&3)
+if [ $? -ne 0 ]; then
+    HOST=$(hostname -I | cut -d' ' -f1)
+fi
+
+#Set host in configuration files
+filepath="/etc/kemenn/kemenn"
+sed -i "s/localhost/$HOST/g" "$filepath"
+filepath="/etc/apache2/sites-available/kemenn.conf"
+sed -i "s/ip_of_webserver/$HOST/g" "$filepath"
+
+#Set right on files
+chmod +x "/usr/bin/kemenn"
+
+#activation du site
+sleep 1
+a2ensite kemenn >/dev/null
+service apache2 restart
+
+echo "The website is available at the following address :"
+echo "http://$HOST"
