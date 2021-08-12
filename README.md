@@ -4,7 +4,7 @@ The server for Kemenn project.
 
 This server allows to manage the client connections and their configurations in a centralized way. A simple web interface is proposed.
 
-This is the technical documentation. You can find the users documentation here : https://github.com/Kemenn/presentation.git
+You can found more technical details on documentation : https://github.com/Kemenn/documentation.git
 
 - [DESCRIPTION](#description)
 - [INSTALLATION](#installation)
@@ -15,32 +15,52 @@ This is the technical documentation. You can find the users documentation here :
 
 ## Description
 
-The server is made in 3 parts:
 
- * **The configuration manager** : it is in charge of reading the configuration and looking for the necessary information to send messages to the clients.
+### Web interface :
 
- * **The message handler** : it processes incoming messages and replies to them.
+#### · messages management
+There is the message send display on window of clients. The alert message is the message that appears for users who are asked for help. The confirm message is the message that appears when you have send an alert. The error message is the message that will be displayed if the alert that has just been sent is an error on the part of the user.
 
- * **The session manager** : it keeps an updated list of the current sessions of the rds servers. It also keeps the list of correspondence between mac address and username of all clients (thin client or thick client).
+The following variables will be replaced by the information of the person from whom the message comes.
 
- * **The web interface** : is managed by apache.
+  - $FIRSTNAME : replace by firstname
+  - $LASTNAME : replace by lasttname
+  - $LOCATION : replace by location
+
+#### · groups management
+
+To understand the utility, [read the client documentation](https://github.com/Kemenn/clt-kemenn#user-group)
+There is no space before or after the commas that separate the usernames composing the group.
+
+`groupname = user1,user2,etc...`
+
+#### · Location management
+mac address is configure in lower case without the separation by ":".
+
+`mac_adress = description of location`
+
+#### · Contact management
+Makes the correspondence between the user name and the human first name.
+
+#### · Management of the kemenn server parameters
 
 
-### Deployement diagram
-![The deployement diagram](./docs/french_deployment_diagram.png)
+### Command interface
 
+There is lot of command to control the kemenn service (is not a system service...).
 
-### Use case diagram
-![The use case diagram](./docs/french_use_case_diagram.png)
+| Command name | Description of action |
+| :----------- | :-------------------- |
+| kemenn start | Start the kemenn service. If there is started, return an error. |
+| kemenn stop  | Stop connection with all clients. Client is shutting down. Then the service is stopped. |
+| kemenn restart | Ask at client to stop connection few seconds. The the service is stopped. You are a little time to restart it with first command |
+| kemenn maintenance | Ask at client to stop connection few minute before retry to connect. You are few minute to make a maintenance |
 
+You can start kemenn service at the hand with this command : `python3 /usr/share/kemenn/kemenn_appserver.py command`
 
-### Syntax of outgoing messages :
-```
-r[] '' → message reçus (Read)
-s[] '' → message envoyé (Send)
-m[] '' → Message d'information du serveur
-a[] '' → message envoyé pour Action
-```
+The same commands as described above are then available without the first word "kemenn". But there is an other command available to send a message to a specific user : `send [username] [a message for username]`. This command not yet available from alert command.
+
+*Note* : you can set many parameters in client before installation to configure time for maintenance, number of try to connect, etc... [documentation here](https://github.com/Kemenn/clt-kemenn#configuration)
 
 
 
@@ -74,7 +94,11 @@ apt install -y ./srv-kemenn.deb
 ### Windows :
 I have no time. Install Linux and refer to the previous step...
 
+
+
 ## Configuration
+
+You can set many parameters in web interface. [Read this](#web-interface) to configure.
 
 There is 3 configurations files in */etc/kemenn* directory :
 
@@ -95,20 +119,6 @@ There is 3 configurations files in */etc/kemenn* directory :
   * password : the hash of password used for access configuration webpage.
   * Ldap (adress or ip, username, password, base) : the necessary informations to use an ldap services. Users can be a simple user without admin rights.
   * Rds (adress or ip list, username, password) : the necessary informations needed to keep the list of current rds server sessions up to date.
-
-
-### Syntax of the client configuration file :
-
- - **Groups** : no space before or after the commas that separate the usernames composing the group.
- `groupname = user1,user2,etc...`
-
- - **Locations** : mac address in lower case without the separation by ":".
- `mac_adress = localisation`
-
- - **Messages configuration** : The following variables will be replaced by the information of the person from whom the message comes.
-  - $FIRSTNAME : replace by firstname
-  - $LASTNAME : replace by lasttname
-  - $LOCATION : replace by location
 
 
 
