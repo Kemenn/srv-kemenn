@@ -16,7 +16,7 @@ You can found more technical details on documentation : https://github.com/Kemen
 ## Description
 
 
-### Web interface :
+### Web interface
 
 #### · messages management
 There is the message send display on window of clients. The alert message is the message that appears for users who are asked for help. The confirm message is the message that appears when you have send an alert. The error message is the message that will be displayed if the alert that has just been sent is an error on the part of the user.
@@ -29,7 +29,7 @@ The following variables will be replaced by the information of the person from w
 
 #### · groups management
 
-To understand the utility, [read the client documentation](https://github.com/Kemenn/clt-kemenn#user-group)
+To understand the utility, [read the client documentation](https://github.com/Kemenn/clt-kemenn#user-group-)
 There is no space before or after the commas that separate the usernames composing the group.
 
 `groupname = user1,user2,etc...`
