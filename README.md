@@ -40,7 +40,9 @@ mac address is configure in lower case without the separation by ":".
 `mac_adress = description of location`
 
 #### · Contact management
-Makes the correspondence between the user name and the human first name.
+Makes the correspondence between the user name and the human first name. The firstname need to be separate by a ";".
+
+`username = Firstname, Lastname`
 
 #### · Management of the kemenn server parameters
 First, you can set the password to access at web interface.
@@ -60,14 +62,14 @@ There is lot of command to control the kemenn service (is not a system service..
 | :----------- | :-------------------- |
 | kemenn start | Start the kemenn service. If there is started, return an error. |
 | kemenn stop  | Stop connection with all clients. Client is shutting down. Then the service is stopped. |
-| kemenn restart | Ask at client to stop connection few seconds. The the service is stopped. You are a little time to restart it with first command |
-| kemenn maintenance | Ask at client to stop connection few minute before retry to connect. You are few minute to make a maintenance |
+| kemenn restart | * Ask at client to stop connection few seconds. The the service is stopped. You are a little time to restart it with first command |
+| kemenn maintenance | * Ask at client to stop connection few minute before retry to connect. You are few minute to make a maintenance |
+
+*: you can set many parameters in client before installation to configure time for maintenance, number of try to connect, etc... [documentation here](https://github.com/Kemenn/clt-kemenn#configuration)
 
 You can start kemenn service at the hand with this command : `python3 /usr/share/kemenn/kemenn_appserver.py command`
 
 The same commands as described above are then available without the first word "kemenn". But there is an other command available to send a message to a specific user : `send [username] [a message for username]`. This command not yet available from alert command.
-
-*Note* : you can set many parameters in client before installation to configure time for maintenance, number of try to connect, etc... [documentation here](https://github.com/Kemenn/clt-kemenn#configuration)
 
 
 
@@ -109,20 +111,20 @@ You can set many parameters in web interface. [Read this](#web-interface) to con
 
 There is 3 configurations files in */etc/kemenn* directory :
 
- * **kemenn** : The configuration need a restart of service.
+* **kemenn** : The configuration need a restart of service.
   * HOST : the ip or hostname used by kemenn service.
   * PORT : the port used by kemenn service.
-  * SEARCH_MAC _RDP _CLIENTS : if you use rds system, set this value to True.
+  * SEARCH_MAC _RDP _CLIENTS : if you use rds system, set this value to "True".
   * MAC _SERVICE _TIME : time between two scan of session on rds servers.
   * USE _LDAP _SERVICE : set this value to True if you want to use an ldap directory to found firstname and lastname of users.
 
- * **clt-kemenn** : The informations used to display message on client.
+* **clt-kemenn** : The informations used to display message on client.
   * Message (alert, confirm, error) : You can set the message display in graphical window by type.
   * Groups : To set groups of users.
   * Location : To set the correspondance between a mac with a human location. When a users connect with a computer for the first time, a localisation name is asked and save in this part.
   * Contact : To set the correspondance between a username with the humans name of a person when not in ldap.
 
- * **srv-kemenn** : The informations used by server service.
+* **srv-kemenn** : The informations used by server service.
   * password : the hash of password used for access configuration webpage.
   * Ldap (adress or ip, username, password, base) : the necessary informations to use an ldap services. Users can be a simple user without admin rights.
   * Rds (adress or ip list, username, password) : the necessary informations needed to keep the list of current rds server sessions up to date.
@@ -136,3 +138,5 @@ There is 3 configurations files in */etc/kemenn* directory :
  - Allow possibility to send message to a specific client by command interface.
  
  - Remake the indexation of current session of rds...
+ 
+ - Remake the dict of client connection. For the moment, if the same users connect two different sessions at kemenn service, the latest connection overwrites the previous one... ;(
