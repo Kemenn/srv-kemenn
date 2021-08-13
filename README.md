@@ -43,6 +43,13 @@ mac address is configure in lower case without the separation by ":".
 Makes the correspondence between the user name and the human first name.
 
 #### · Management of the kemenn server parameters
+First, you can set the password to access at web interface.
+
+Then, there is the necessary informations to send requests at LDAP service when there is an alert.
+
+Information needed to keep the list of active sessions up to date when using a thin client infrastructure. If you do not use such an infrastructure, you can leave this section blank.
+
+You are more parameters in files. [See documentation.](#configuration)
 
 
 ### Command interface
